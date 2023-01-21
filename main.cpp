@@ -1,5 +1,8 @@
 #include "./classes/headers/UserTalker.h"
+#include "./classes/headers/FileTalker.h"
+using namespace std;
 
 int main() {
-  UserTalker::get_input();
+  int menuNumber = UserTalker::getMenuNumber();
+  FileTalker::runFunction(menuNumber, "", ".");
 }
