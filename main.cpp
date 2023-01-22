@@ -4,5 +4,5 @@ using namespace std;
 
 int main() {
   int menuNumber = UserTalker::getMenuNumber();
-  FileTalker::runFunction(menuNumber, "", ".");
+  FileTalker::runFunction(menuNumber, "C:\\Users\\Administrator\\Desktop\\dati_mamma");
 }

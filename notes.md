@@ -8,7 +8,9 @@ Ciclando recursivamente una cartella, i file possono essere:
   -- data di creazione
   -- data di modifica
 - rinominati, per data di creazione
-- eliminati, se copie esatte
+- eliminati, per
+  -- copie esatte
+  -- directory vuote
 
 # COMPONENTS
 
