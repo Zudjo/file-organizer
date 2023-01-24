@@ -1,19 +1,23 @@
 #include "./headers/FileTalker.h"
 #include <map>
 #include <filesystem>
+#include <iostream>
 using namespace std;
 
 namespace fs = std::filesystem;
 typedef int (*pFunction)(string, string);
 
+// PROPERTIES
 map<int, string> FileTalker::menuFunctions = {
   { 10, "extension" },
   { 11, "creationDate" },
   { 12, "editDay" },
   { 21, "creationDate" },
-  { 31, "identicalCopy" }
+  { 31, "identicalCopy" },
+  { 32, "emptyFolder" }
 };
 
+// METHODS
 string FileTalker::outputDirectory;
 
 int FileTalker::runFunction(int menuNumber, string pathDirectory) {
@@ -24,13 +28,13 @@ int FileTalker::runFunction(int menuNumber, string pathDirectory) {
   fs::create_directory(FileTalker::outputDirectory);
 
   for (const fs::directory_entry& dir_entry :
-      fs::recursive_directory_iterator(pathDirectory)) {
+  fs::recursive_directory_iterator(pathDirectory)) {
 
-    if (!dir_entry.is_directory()) {
+    path = dir_entry.path().string();
 
-      path = dir_entry.path().string();
+    // try {
       function(path, FileTalker::menuFunctions[menuNumber]);
-    }
+    // } catch (...) {}
 
   }
   return 0;
@@ -53,25 +57,32 @@ bool FileTalker::checkMenuNumber(int menuNumber) {
   return false;
 }
 
-int FileTalker::folderer(string file, string filter) {
-  if (filter == "extension") {
-    string fileName = file.substr(file.find_last_of("/\\") + 1);
-    string extension = file.substr(file.find_last_of(".") + 1);
+int FileTalker::folderer(string path, string filter) {
+  if (filter == "extension" && !fs::is_directory(path)) {
+
+    string pathName = path.substr(path.find_last_of("/\\") + 1);
+    string extension = path.substr(path.find_last_of(".") + 1);
     string extensionDirectory = FileTalker::outputDirectory + "\\" + extension;
 
     if (!fs::exists(extensionDirectory)) {
       fs::create_directory(extensionDirectory);
     }
-
-    fs::rename(file, extensionDirectory + "\\" + fileName);
+    fs::rename(path, extensionDirectory + "\\" + pathName);
   }
   return 0;
 }
 
-int FileTalker::renamer(string file, string filter) {
+int FileTalker::renamer(string path, string filter) {
   return 0;
 }
 
-int FileTalker::deleter(string pathDirectory, string filter) {
+int FileTalker::deleter(string path, string filter) {
+
+  if (filter == "emptyFolder") {
+    if (fs::is_empty(path)) {
+      fs::remove(path);
+      std::cout << "deleted: " << path << '\n';
+    }
+  }
   return 0;
 }

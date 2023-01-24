@@ -16,7 +16,8 @@ string UserTalker::menuFunctions =
   "    21 -> data di creazione\n"
   "\n"
   "  Eliminati, per\n"
-  "    31 -> copie esatte\n";
+  "    31 -> copie esatte\n"
+  "    32 -> cartella vuota\n";
 
 // METHODS
 int UserTalker::getMenuNumber() {
