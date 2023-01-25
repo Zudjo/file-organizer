@@ -32,10 +32,7 @@ int FileTalker::runFunction(int menuNumber, string pathDirectory) {
 
     path = dir_entry.path().string();
 
-    // try {
-      function(path, FileTalker::menuFunctions[menuNumber]);
-    // } catch (...) {}
-
+    function(path, FileTalker::menuFunctions[menuNumber]);
   }
   return 0;
 }
@@ -64,10 +61,12 @@ int FileTalker::folderer(string path, string filter) {
     string extension = path.substr(path.find_last_of(".") + 1);
     string extensionDirectory = FileTalker::outputDirectory + "\\" + extension;
 
-    if (!fs::exists(extensionDirectory)) {
-      fs::create_directory(extensionDirectory);
-    }
-    fs::rename(path, extensionDirectory + "\\" + pathName);
+    try {
+      if (!fs::exists(extensionDirectory)) {
+        fs::create_directory(extensionDirectory);
+      }
+      fs::rename(path, extensionDirectory + "\\" + pathName);
+    } catch (...) {}
   }
   return 0;
 }
@@ -79,10 +78,16 @@ int FileTalker::renamer(string path, string filter) {
 int FileTalker::deleter(string path, string filter) {
 
   if (filter == "emptyFolder") {
-    if (fs::is_empty(path)) {
-      fs::remove(path);
-      std::cout << "deleted: " << path << '\n';
-    }
+    // try {
+      if (fs::is_directory(path)) {
+        std::cout << path << '\n';
+        if (fs::is_empty(path)) {
+          std::cout << "is empty: " << path << '\n';
+          fs::remove(path);
+          std::cout << "deleted: " << path << '\n';
+        }
+      }
+    // } catch (...) {}
   }
   return 0;
 }

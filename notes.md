@@ -21,3 +21,9 @@ Ciclando recursivamente una cartella, i file possono essere:
   -- executes functions on files
 - Main
   -- cycles through directory executing chosen function
+
+# EXCEPTIONS
+
+- paths with special characters
+- paths with . (dot)
+- system directories (ex: Download, Contacts, Documents, etc...)
